@@ -1,18 +1,28 @@
-# backend/scanner/cookies.py
-
 import requests
 
 
 def check_cookies(url):
 
-    response = requests.get(url)
+    try:
 
-    cookies = []
+        response = requests.get(
+            url,
+            timeout=10
+        )
 
-    for cookie in response.cookies:
+        cookies = []
 
-        cookies.append({
-            "name": cookie.name
-        })
+        for cookie in response.cookies:
 
-    return cookies
+            cookies.append({
+                "name": cookie.name,
+                "secure": cookie.secure
+            })
+
+        return cookies
+
+    except Exception as error:
+
+        return {
+            "error": str(error)
+        }
