@@ -3,9 +3,21 @@ from datetime import datetime
 
 def generate_html_report(result):
 
-    html = f"""
+    score = result["score"]
+
+    color = "#28a745"
+
+    if score < 80:
+        color = "#ffc107"
+
+    if score < 50:
+        color = "#dc3545"
+
+    return f"""
 <!DOCTYPE html>
+
 <html>
+
 <head>
 
 <meta charset="UTF-8">
@@ -17,22 +29,28 @@ def generate_html_report(result):
 body {{
     font-family: Arial;
     margin: 40px;
+    background: #f4f4f4;
 }}
 
-h1 {{
-    color: #2c3e50;
+.card {{
+    background: white;
+    padding: 20px;
+    margin-bottom: 15px;
+    border-radius: 8px;
 }}
 
 .score {{
-    font-size: 24px;
+    font-size: 40px;
     font-weight: bold;
-    color: green;
+    color: {color};
 }}
 
-.section {{
-    margin-top: 20px;
-    padding: 15px;
-    border: 1px solid #ddd;
+h1 {{
+    color: #1f2937;
+}}
+
+pre {{
+    white-space: pre-wrap;
 }}
 
 </style>
@@ -41,65 +59,46 @@ h1 {{
 
 <body>
 
-<h1>🛡️ OWASP Guardian Report</h1>
+<h1>🛡️ OWASP Guardian</h1>
 
-<p>
-Generated:
-{datetime.now()}
-</p>
+<p>Generated: {datetime.now()}</p>
 
-<div class="section">
+<div class="card">
 
 <h2>Security Score</h2>
 
-<p class="score">
-{result["score"]}/100
-</p>
+<div class="score">
+{score}/100
+</div>
 
 </div>
 
-<div class="section">
-
+<div class="card">
 <h2>HTTPS</h2>
-
 <pre>{result["https"]}</pre>
-
 </div>
 
-<div class="section">
-
-<h2>Headers</h2>
-
+<div class="card">
+<h2>Security Headers</h2>
 <pre>{result["headers"]}</pre>
-
 </div>
 
-<div class="section">
-
+<div class="card">
 <h2>Clickjacking</h2>
-
 <pre>{result["clickjacking"]}</pre>
-
 </div>
 
-<div class="section">
-
+<div class="card">
 <h2>Technology</h2>
-
 <pre>{result["technology"]}</pre>
-
 </div>
 
-<div class="section">
-
+<div class="card">
 <h2>Cookies</h2>
-
 <pre>{result["cookies"]}</pre>
-
 </div>
 
 </body>
+
 </html>
 """
-
-    return html
