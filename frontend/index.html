@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>OWASP Guardian</title>
+
+<style>
+
+body{
+    font-family: Arial;
+    max-width: 900px;
+    margin:40px auto;
+    padding:20px;
+}
+
+input{
+    width:80%;
+    padding:10px;
+}
+
+button{
+    padding:10px 20px;
+}
+
+pre{
+    background:#eee;
+    padding:20px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>🛡️ OWASP Guardian</h1>
+
+<input
+id="url"
+placeholder="https://empresa.com">
+
+<button onclick="scan()">
+Escanear
+</button>
+
+<pre id="result"></pre>
+
+<script>
+
+async function scan(){
+
+    const url =
+        document.getElementById("url").value;
+
+    const response =
+        await fetch(
+        `http://127.0.0.1:8000/scan?url=${url}`
+        );
+
+    const data =
+        await response.json();
+
+    document.getElementById(
+        "result"
+    ).textContent =
+        JSON.stringify(
+            data,
+            null,
+            2
+        );
+}
+
+</script>
+
+</body>
+</html>
