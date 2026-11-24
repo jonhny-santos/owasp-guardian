@@ -6,7 +6,10 @@ from scanner.clickjacking import check_clickjacking
 from scanner.score import calculate_score
 from scanner.technologies import detect_technology
 from scanner.cookies import check_cookies
-
+from fastapi.responses import HTMLResponse
+from reports.report_generator import (
+    generate_html_report
+)
 app = FastAPI()
 
 
@@ -25,3 +28,27 @@ def scan(url: str):
         "technology": detect_technology(url),
         "cookies": check_cookies(url)
     }
+@app.get("/report", response_class=HTMLResponse)
+def report(url: str):
+
+    headers_result = check_security_headers(url)
+
+    score = calculate_score(
+        headers_result
+    )
+
+    result = {
+        "score": score,
+        "headers": headers_result,
+        "https": check_https(url),
+        "clickjacking":
+            check_clickjacking(url),
+        "technology":
+            detect_technology(url),
+        "cookies":
+            check_cookies(url)
+    }
+
+    return generate_html_report(result)
+
+
