@@ -20,5 +20,6 @@ def scan(url: str):
         "score": score,
         "headers": headers_result,
         "https": check_https(url),
-        "clickjacking": check_clickjacking(url)
+        "clickjacking": check_clickjacking(url),
+        "technology": detect_technology(url)
     }

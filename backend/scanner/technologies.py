@@ -1,15 +1,24 @@
 import requests
 
-
 def detect_technology(url):
 
-    response = requests.get(url)
+    try:
 
-    server = response.headers.get(
-        "Server",
-        "Desconhecido"
-    )
+        response = requests.get(
+            url,
+            timeout=10
+        )
 
-    return {
-        "server": server
-    }
+        return {
+            "server":
+            response.headers.get(
+                "Server",
+                "Unknown"
+            )
+        }
+
+    except Exception as error:
+
+        return {
+            "error": str(error)
+        }
